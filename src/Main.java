@@ -1,18 +1,34 @@
+import java.util.Set;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Passnger p = new Passnger("guy",123465);
+        Airline airline = new Airline("airline");
+        Flight flight =new Flight(3000.0,15325,airline.getName(),"orel","daniel",50,"12:00","6:00","31/08/1999",2500);
+        Subairline subairline = new Subairline("elal");
+        Subairline subairline1 =airline.addSubAirline("israel");
+        System.out.println(airline.getName());
+        System.out.println(subairline1.getName());
+        Flight g=airline.creatFlight(1000.0,5325,airline.getName(),"TjLV","USA",50,"12:00","6:00","31/08/1999",2500);
+        airline.addFlight(flight);
+        Flight a=subairline1.creatFlight(1000.0,5325,subairline1.getName(),"TLV","USA",50,"12:00","6:00","31/08/1999",2500);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        g.buy_tiket(p);
+        System.out.println(g.getNum_of_tiket());
+        System.out.println(g.isAvailable());
+       Subairline th= subairline1.addSubAirline("thorkish");
+      Flight w=  th.creatFlight(2000.0,65325,airline.getName(),"igap","USA",10,"12:00","6:00","31/08/1999",30000);
+        Set<Flight> l = airline.getAllFlight();
+        for (Flight fly : l){
+            System.out.println(fly.getFrom());
+            fly.print();
         }
+
     }
 }
+
 /*
 
 // Strategy Pattern
