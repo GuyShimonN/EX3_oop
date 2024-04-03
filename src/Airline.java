@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 class Airline extends AirlineGlobal {
@@ -14,9 +12,9 @@ class Airline extends AirlineGlobal {
     }
     @Override
     public Set<Flight> getAllFlight() {
-        if (super.getChildren().isEmpty()) return super.getAllFlight();
+        if (super.getSubAirline().isEmpty()) return super.getAllFlight();
         Set<Flight> allfly_and_Sub = new HashSet<Flight>();
-        for (AirlineGlobal airline : getChildren()) {
+        for (AirlineGlobal airline : getSubAirline()) {
             allfly_and_Sub.addAll(airline.getAllFlight());
         }
         allfly_and_Sub.addAll(super.getAllFlight());

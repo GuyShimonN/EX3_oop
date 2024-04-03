@@ -1,19 +1,18 @@
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class SerchByDistans implements SearchStrategy {
-    private double maxDistance;
+public class PriceSearchStrategy implements SearchStrategy {
+    private double maxPrice;
 
-    public SerchByDistans(double maxDistance) {
-        this.maxDistance = maxDistance;
+    public PriceSearchStrategy(double maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
     @Override
     public Set<Flight> search(Set<Flight> flights) {
         Set<Flight> filteredFlights = new HashSet<>();
         for (Flight flight : flights) {
-            if (flight.getDistans() <= maxDistance) {
+            if (flight.getPrice() <= maxPrice) {
                 filteredFlights.add(flight);
             }
         }
