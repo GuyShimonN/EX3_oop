@@ -1,5 +1,5 @@
 
-public class Passnger extends person {
+public class Passnger extends User {
     private double money;
     private String my_tiket;
 
@@ -11,9 +11,15 @@ public class Passnger extends person {
         if(money>=flight.getPrice()) {
             flight.buy_tiket(this);
             this.money=this.money-flight.getPrice();
-            this.my_tiket=flight.info();
+            this.my_tiket=flight.toString();
         }
         else throw new no_money("you do not have enough money");
+    }
+
+
+    @Override
+    public void update(String message) {
+
     }
 }
 

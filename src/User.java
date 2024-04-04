@@ -1,10 +1,10 @@
-public abstract class person {
+public abstract class User implements Observer {
     private String name;
     private String password;
     private long ID;
     private boolean conncted;
 
-    public person(String name,Long id,String password){
+    public User(String name, Long id, String password){
         if ((id<100000000)||(id>1000000000))throw new RuntimeException("not valid id");
         if ((password.length()<4)||(password.length()>8))throw new RuntimeException("not valid password");
         this.ID=id;
@@ -24,4 +24,5 @@ public abstract class person {
     public void logout(){
         conncted=false;
     }
+
 }

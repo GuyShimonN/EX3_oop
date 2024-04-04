@@ -1,7 +1,9 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AirlineGlobal {
+public abstract class AirlineGlobal implements Observable {
+    private Set<Observer> observers_Airline = new HashSet<>();
+
     private String name;
     private Set<AirlineGlobal> subAirline;
    private  Set<Flight> allFlight;
@@ -40,7 +42,24 @@ public abstract class AirlineGlobal {
     public Flight creatFlight(Double price,long numFlight,String owner,String from,String to,int num_of_tiket,int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int day_arrival,int month_arrival,int hours_Arrival,int Minute_Arrival,double Distans){
        Flight p = new Flight(price, numFlight, owner, from, to, num_of_tiket, year_of_depart, month_of_depart, day_of_depart, hours_depart, Minute_depart, day_arrival, month_arrival, hours_Arrival, Minute_Arrival, Distans);
        this.allFlight.add(p);
+        notifyObservers(p,"New Flight");
        return p;
+    }
+    @Override
+    public void attach(Observer o) {
+        observers_Airline.add(o);
+    }
+
+    @Override
+    public void detach(Observer o) {
+        observers_Airline.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(Flight p,String message) {
+        for (Observer observer : observers_Airline) {
+            observer.update(message +p.toString());
+        }
     }
 
 }
