@@ -2,7 +2,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 class Airline extends AirlineGlobal {
-    private Set<Observer> observers_Airline = new HashSet<>();
+
 
     // Implement AirlineComponent methods
 
@@ -21,6 +21,7 @@ class Airline extends AirlineGlobal {
 
         return allfly_and_Sub;
     }
+
 
 
 }
