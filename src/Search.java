@@ -1,20 +1,21 @@
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class Search {
-    public Set<Flight> search(char a, Set<Flight> g,LocalDateTime b, Long dis){
-       if (a=='T'||a=='t') {
-           TimeSearchStrategy q =new TimeSearchStrategy(b);
-           return q.search(g);
-       }
-        if (a=='D'||a=='d') {
-            SerchByDistans q =new SerchByDistans(dis);
-            return q.search(g);
+    private SearchStrategy strategy;
+
+    public Search(SearchStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public ArrayList<Flight> execute(ArrayList<Flight> flights) {
+        if (strategy != null) {
+            return strategy.search(flights);
         }
-        if (a=='P'||a=='p') {
-            PriceSearchStrategy q =new PriceSearchStrategy(dis);
-            return q.search(g);
-        }
-        return null;
+        return flights; // Return the unfiltered list if no strategy is set
+    }
+
+    // Optionally, allow changing the strategy at runtime
+    public void setStrategy(SearchStrategy strategy) {
+        this.strategy = strategy;
     }
 }

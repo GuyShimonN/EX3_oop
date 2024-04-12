@@ -5,27 +5,36 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Flight implements Observable{
+public class Flight implements Observable ,Travelable{
     private Set<Observer> observers = new HashSet<>();
     private Set<Passenger> passengers;
     private Set<Employed> Employeds;
-    public static   LocalDate today =LocalDate.now();
+
     private LocalDateTime date_time_of_flight;
     private LocalDateTime date_time_of_arrive_flight;
-    private long time_of_flight;
+
     private long profit;
     private AirlineGlobal owner;
     private Double price;
-    private long numFlight;
+    private String numFlight;
     private int num_of_tiket;
     private String from;
     private String to;
 
-    private String info;
     private double Distans;
     private boolean available =false;
-    public Flight(Double price,long numFlight,AirlineGlobal owner,String from,String to,int num_of_tiket,int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int day_arrival,int month_arrival,int hours_Arrival,int Minute_Arrival,double Distans){
-     this.price=price;
+    public Flight(Double price,String numFlight,AirlineGlobal owner,String from,String to,int num_of_tiket,int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int day_arrival,int month_arrival,int hours_Arrival,int Minute_Arrival,double Distans,int year_arrival){
+        if (!numFlight.matches("[A-Z]{2}\\d{3}")) {
+            System.out.println("the number of flight not valid");
+//            owner.deleteFlight(this);
+            return ;
+        }
+        if(Main.NumFlight.contains(numFlight)){
+            System.out.println("the number of flight in use");
+            return;
+        }
+        Main.NumFlight.add(numFlight);
+        this.price=price;
      this.numFlight=numFlight;
      this.owner=owner;
      this.from=from;
@@ -39,14 +48,11 @@ public class Flight implements Observable{
         LocalDate flightDate = LocalDate.of(year_of_depart, month_of_depart, day_of_depart);
         LocalTime flightTime = LocalTime.of(hours_depart, Minute_depart);
         this.date_time_of_flight =LocalDateTime.of(flightDate, flightTime);
-        LocalDate flightDate_arrival = LocalDate.of(year_of_depart, month_arrival, day_arrival);
+        LocalDate flightDate_arrival = LocalDate.of(year_arrival, month_arrival, day_arrival);
         LocalTime flightTime_arrival = LocalTime.of(hours_Arrival, Minute_Arrival);
         this.date_time_of_arrive_flight =LocalDateTime.of(flightDate_arrival, flightTime_arrival);
-        Duration duration = Duration.between(date_time_of_flight, date_time_of_arrive_flight);
-        long hours = duration.toHours();
-        long minutes = duration.toMinutes() % 60;
-        minutes= minutes+(hours*60);
-        this.time_of_flight=minutes;
+
+
 
 
     }
@@ -69,6 +75,7 @@ public class Flight implements Observable{
           if (!isAvailable())this.available=true;
           num_of_tiket++;
           passenger.setMoney(passenger.getMoney()+this.price);
+
         }
 
     }
@@ -77,7 +84,7 @@ public class Flight implements Observable{
             return owner;
     }
 
-    public long getNumFlight() {
+    public String getNumTravelabe() {
         return numFlight;
     }
 
@@ -125,34 +132,24 @@ public class Flight implements Observable{
     private void setArrive_time(int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart) throws time_rong {
         LocalDate flightDate = LocalDate.of(year_of_depart, month_of_depart, day_of_depart);
         LocalTime flightTime = LocalTime.of(hours_depart, Minute_depart);
-//        if (flightDate.isBefore(this.date_time_of_flight.toLocalDate())){
-//            throw new time_rong("the arrive time is before the depart time");
-//        }
-//        if(flightDate.equals(this.date_time_of_flight.toLocalDate()) ){
-//            if (flightTime.isBefore(this.date_time_of_flight.toLocalTime())){
-//                throw new time_rong("the arrive time is before the depart time");
-//            }
-//        }
-
-
     }
 
     public void setAvailable(boolean available) {
         this.available = available;
-        notifyObservers(this,"The tikets for sale now is"+available);
+        if (available) {
+            notifyObservers(this, "The tikets to "+this.numFlight+" for sale is available");
+        }
+        else notifyObservers(this, "The tiketsto "+this.numFlight+" for sale no available");
 
     }
 
 
 
-    public void setDepart_time(int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int hours_arrival,int minute_arrival) throws time_rong {
+    public void setDepart_time(int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int hours_arrival,int minute_arrival,int year_arrival,int month_of_arrival,int day_arrival) throws time_rong {
         LocalDate flightDate = LocalDate.of(year_of_depart, month_of_depart, day_of_depart);
         LocalTime flightTime = LocalTime.of(hours_depart, Minute_depart);
         this.date_time_of_flight =LocalDateTime.of(flightDate, flightTime);
-        int month_arrival = this.date_time_of_arrive_flight.getMonthValue()+(this.date_time_of_flight.getMonthValue()-this.date_time_of_arrive_flight.getMonthValue());
-        int year =(year_of_depart+(this.date_time_of_arrive_flight.getYear()-year_of_depart));
-        int day = (day_of_depart+Math.abs(this.date_time_of_arrive_flight.getDayOfYear()-date_time_of_flight.getDayOfYear()))%7;
-        setArrive_time(year,month_arrival,day,hours_arrival,minute_arrival);
+        setArrive_time(year_arrival,month_of_arrival,day_arrival,hours_arrival,minute_arrival);
         notifyObservers(this,"Pay attention change depart time the new info"+toString());
         notifyObservers_for_passnger(this,"Pay attention change depart time"+toString());
     }
@@ -169,11 +166,7 @@ public class Flight implements Observable{
         notifyObservers(this,"change in the surce destantion "+toString());
     }
 
-    public void setNumFlight(long numFlight) {
-        this.numFlight = numFlight;
-        notifyObservers_for_passnger(this,"change in the number of flight"+toString());
-        notifyObservers(this,"change in the number of flight"+toString());
-    }
+
 
     public void setNum_of_tiket(int num_of_tiket) {
         this.num_of_tiket = num_of_tiket;
@@ -196,6 +189,9 @@ public class Flight implements Observable{
     public Set<Employed> getEmployds(){
         return this.Employeds;
 
+    }
+    public Set<Passenger> getPassengers(){
+        return passengers;
     }
     public void setEmployds(Employed employds){
         this.Employeds.add(employds);

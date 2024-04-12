@@ -1,24 +1,22 @@
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class TimeSearchStrategy implements SearchStrategy {
-//    @Override
-//    public Set<Flight> search(Set<Flight> flights, SearchCriteria criteria) {
-//        return flights.stream()
-//                .filter(flight -> flight.getDepart_time().isAfter(criteria.getDepartureTime()))
-//                .collect(Collectors.toSet());
-//    }
     private LocalDateTime time;
-    public TimeSearchStrategy(LocalDateTime localDateTime){
-        this.time=localDateTime;
+
+    public TimeSearchStrategy(LocalDateTime time) {
+        this.time = time;
     }
 
     @Override
-    public Set<Flight> search(Set<Flight> flights) {
+    public ArrayList<Flight> search(ArrayList<Flight> flights) {
+        ArrayList<Flight> filteredFlights = flights.stream()
+                .filter(flight -> flight.getDepart_time().isAfter(time))
+                .sorted(Comparator.comparing(Flight::getDepart_time))
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        return flights.stream()
-                .filter(flight -> flight.getDepart_time().isAfter(time)).collect(Collectors.toSet());
-
+        return filteredFlights;
     }
 }

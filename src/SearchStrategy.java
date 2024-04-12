@@ -1,5 +1,5 @@
-import java.util.Set;
+import java.util.ArrayList;
 
 public interface SearchStrategy {
-    Set<Flight> search(Set<Flight> flights);
+    ArrayList<Flight> search(ArrayList<Flight> flights);
 }

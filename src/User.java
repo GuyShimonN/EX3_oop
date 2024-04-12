@@ -31,10 +31,12 @@ public abstract class User implements Observer {
         conncted=false;
     }
     public boolean getConncted(){return this.conncted;}
-    public double getMoney(){return this.money;}
+    public double getMoney(){if (conncted)return this.money;
+        System.out.println("you are not connected please connect first ");return 0;}
 
     public void setMoney(double money) {
-        this.money = money;
+        if(conncted)this.money = money;
+        else   System.out.println("you are not connected please connect first ");
     }
     public void addNotifcaiton(String massage){
         this.notifcation.add(massage);

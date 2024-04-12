@@ -2,64 +2,54 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AirlineGlobal implements Observable {
-    private Set<Observer> observers_Airline = new HashSet<>();
-    private Set<Employed> Employeds =new HashSet<Employed>();
+    protected Set<Observer> observers_Airline = new HashSet<>();
+    protected Set<Employed> Employeds =new HashSet<Employed>();
 
     private String name;
-    private Set<AirlineGlobal> subAirline;
+
    private  Set<Flight> allFlight;
    public  AirlineGlobal(String name)
    {
        this.name=name;
-       this.subAirline = new HashSet<AirlineGlobal>();
        this.allFlight = new HashSet<Flight>();
    }
    public String getName(){
         return this.name;
     }
-   public Set<AirlineGlobal> getSubAirline(){
-        return subAirline;
-   }
-    void addChild(AirlineGlobal child){
-        this.subAirline.add(child);
-        notifyObservers(null,this.name+" buy "+child.name);
-        for (Observer t: observers_Airline ) {
-            child.attach(t);
-        }
 
-    }
-    void removeChild(AirlineGlobal child){
-        this.subAirline.remove(child);
-    }
-    void addFlight(Flight flight){
-        this.allFlight.add(flight);
-        notifyObservers(flight,"New flight: "+flight.toString());
-    }
-    void removeFlight(Flight flight){
-        this.allFlight.remove(flight);
+
+
+    void deleteFlight(Flight flight){
+        for (Passenger passenger:flight.getPassengers()){
+            flight.cancel_tiket(passenger);
+        }
+       this.allFlight.remove(flight);
+        notifyObservers(flight,"the flight "+flight.getNumTravelabe()+" cancel");
+        flight.notifyObservers_for_passnger(flight,"Please note the flight"+flight.getNumTravelabe()+" has been canceled and you will receive a refund ");
+        Main.NumFlight.remove(flight.getNumTravelabe());
+        flight=null;
     }
     public Set<Flight> getAllFlight(){
        return allFlight;
     }
-    public Airline creatSubairline(String name){
-        Airline p = new Airline(name);
-      this.subAirline.add(p);
-      for (Observer t: observers_Airline ) {
-          p.attach(t);
-      }
-      return p;
-    }
-    public Flight creatFlight(Double price,long numFlight,AirlineGlobal owner,String from,String to,int num_of_tiket,int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int day_arrival,int month_arrival,int hours_Arrival,int Minute_Arrival,double Distans){
-       Flight p = new Flight(price, numFlight, owner, from, to, num_of_tiket, year_of_depart, month_of_depart, day_of_depart, hours_depart, Minute_depart, day_arrival, month_arrival, hours_Arrival, Minute_Arrival, Distans);
-       this.allFlight.add(p);
-        notifyObservers(p,"New Flight"+p.toString());
+
+    public Flight creatFlight(Double price,String numFlight,AirlineGlobal owner,String from,String to,int num_of_tiket,int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int day_arrival,int month_arrival,int hours_Arrival,int Minute_Arrival,double Distans ,int year_arrival){
+        Flight p = new Flight(price, numFlight, owner, from, to, num_of_tiket, year_of_depart, month_of_depart, day_of_depart, hours_depart, Minute_depart, day_arrival, month_arrival, hours_Arrival, Minute_Arrival, Distans,year_arrival);
+       if (p.isAvailable()) {
+           this.allFlight.add(p);
+           notifyObservers(p, "New Flight" + p.toString());
+           for (Observer observer : observers_Airline) {
+               p.attach(observer);
+           }
+           for (Observer observer : Employeds) {
+               p.attach(observer);
+           }
+       }
        return p;
     }
     @Override
     public void attach(Observer o) {
-        for (AirlineGlobal airline : getSubAirline()) {
-         airline.attach(o);
-        }
+
         for(Flight flight: allFlight){
             flight.attach(o);
         }
@@ -68,9 +58,7 @@ public abstract class AirlineGlobal implements Observable {
 
     @Override
     public void detach(Observer o) {
-        for (AirlineGlobal airline : getSubAirline()) {
-            airline.detach(o);
-        }
+
         for(Flight flight: allFlight){
             flight.detach(o);
         }
@@ -84,10 +72,13 @@ public abstract class AirlineGlobal implements Observable {
         }
     }
     public Employed creatEmployd(String name, Long id, double money, String password){
-       Employed p =new Employed(name,id,money,password);
+       Employed p =new Employed(name,id,money,password,this);
        this.Employeds.add(p);
       attach(p);
        return p;
+    }
+    public Set<Flight>getLocalFlight(){
+       return allFlight;
     }
 
 }

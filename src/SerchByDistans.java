@@ -1,22 +1,21 @@
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class SerchByDistans implements SearchStrategy {
-    private double maxDistance;
+    private double minDistance;
 
     public SerchByDistans(double maxDistance) {
-        this.maxDistance = maxDistance;
+        this.minDistance = maxDistance;
     }
 
     @Override
-    public Set<Flight> search(Set<Flight> flights) {
-        Set<Flight> filteredFlights = new HashSet<>();
-        for (Flight flight : flights) {
-            if (flight.getDistans() <= maxDistance) {
-                filteredFlights.add(flight);
-            }
-        }
+    public ArrayList<Flight> search(ArrayList<Flight> flights) {
+        ArrayList<Flight> filteredFlights = flights.stream()
+                .filter(flight -> flight.getDistans() <= minDistance)
+                .sorted(Comparator.comparingDouble(Flight::getDistans))
+                .collect(Collectors.toCollection(ArrayList::new));
+
         return filteredFlights;
     }
 }
