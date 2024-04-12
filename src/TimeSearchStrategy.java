@@ -11,10 +11,10 @@ public class TimeSearchStrategy implements SearchStrategy {
     }
 
     @Override
-    public ArrayList<Flight> search(ArrayList<Flight> flights) {
-        ArrayList<Flight> filteredFlights = flights.stream()
+    public ArrayList<Travelable> search(ArrayList<Travelable> flights) {
+        ArrayList<Travelable> filteredFlights = flights.stream()
                 .filter(flight -> flight.getDepart_time().isAfter(time))
-                .sorted(Comparator.comparing(Flight::getDepart_time))
+                .sorted(Comparator.comparing(Travelable::getDepart_time))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return filteredFlights;

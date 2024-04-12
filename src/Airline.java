@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,12 +10,28 @@ class Airline extends AirlineGlobal {
     public Airline(String name) {
         super(name);
         this.subAirline = new HashSet<AirlineGlobal>();
+        super.allFlight = new HashSet<Travelable>();
 
     }
+
+    public Travelable creatFlight(Double price,String numFlight,AirlineGlobal owner,String from,String to,int num_of_tiket,int year_of_depart,int month_of_depart,int day_of_depart,int hours_depart,int Minute_depart,int day_arrival,int month_arrival,int hours_Arrival,int Minute_Arrival,double Distans ,int year_arrival){
+        Travelable p = new Flight(price, numFlight, owner, from, to, num_of_tiket, year_of_depart, month_of_depart, day_of_depart, hours_depart, Minute_depart, day_arrival, month_arrival, hours_Arrival, Minute_Arrival, Distans,year_arrival);
+        if (p.isAvailable()) {
+            super.allFlight.add(p);
+            notifyObservers(p, "New Flight" + p.toString());
+            for (Observer observer : observers_Airline) {
+                p.attach(observer);
+            }
+            for (Observer observer : Employeds) {
+                p.attach(observer);
+            }
+        }
+        return p;
+    }
     @Override
-    public Set<Flight> getAllFlight() {
+    public Collection< Travelable> getAllFlight() {
         if (getSubAirline().isEmpty()) return super.getAllFlight();
-        Set<Flight> allfly_and_Sub = new HashSet<Flight>();
+        Set<Travelable> allfly_and_Sub = new HashSet<Travelable>();
         for (AirlineGlobal airline : getSubAirline()) {
             allfly_and_Sub.addAll(airline.getAllFlight());
         }
@@ -58,7 +75,7 @@ class Airline extends AirlineGlobal {
         for (AirlineGlobal airline : getSubAirline()) {
             airline.attach(o);
         }
-        for(Flight flight: getAllFlight()){
+        for(Travelable flight: getAllFlight()){
             flight.attach(o);
         }
         observers_Airline.add(o);
@@ -68,7 +85,7 @@ class Airline extends AirlineGlobal {
         for (AirlineGlobal airline : getSubAirline()) {
             airline.detach(o);
         }
-        for(Flight flight: getAllFlight()){
+        for(Travelable flight: getAllFlight()){
             flight.detach(o);
         }
         observers_Airline.remove(o);

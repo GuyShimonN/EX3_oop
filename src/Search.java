@@ -7,7 +7,7 @@ public class Search {
         this.strategy = strategy;
     }
 
-    public ArrayList<Flight> execute(ArrayList<Flight> flights) {
+    public ArrayList<Travelable> execute(ArrayList<Travelable> flights) {
         if (strategy != null) {
             return strategy.search(flights);
         }

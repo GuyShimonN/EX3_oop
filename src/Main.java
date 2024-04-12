@@ -23,7 +23,7 @@ public class Main {
 
         Airline airline = new Airline("airline");
         Employed orit = airline.creatEmployd("orit", 209306518L, 8000, "1444");
-        Flight flight = airline.creatFlight(3000.0, "AB325", airline, Airport, "paris", 50, 2024, 6, 30, 20, 30, 1, 7, 12, 25, 500, 2024);
+        Flight flight = (Flight) airline.creatFlight(3000.0, "AB325", airline, Airport, "paris", 50, 2024, 6, 30, 20, 30, 1, 7, 12, 25, 500, 2024);
 
         Airline subairline = new Airline("elal");
         Employed yaron = subairline.creatEmployd("yaron", 209306549L, 20000, "1111");
@@ -34,10 +34,10 @@ public class Main {
         Airline subairline1 = (Airline) subairline.creatSubairline("israel");
         Employed dotan = subairline1.creatEmployd("dotan", 208606513L, 70000, "0000");
 
-        Flight flight1 = subairline.creatFlight(1000.0, "AB321", airline, "MIAMI", Airport, 50, 2024, 6, 3, 20, 30, 4, 6, 12, 25, 12500, 2024);
-        Flight flight2 = subairline1.creatFlight(1500.0, "AZ125", subairline1, "TLV", "USA", 50, 2026, 6, 1, 20, 30, 2, 6, 12, 25, 9500, 2026);
+        Flight flight1 = (Flight) subairline.creatFlight(1000.0, "AB321", airline, "MIAMI", Airport, 50, 2024, 6, 3, 20, 30, 4, 6, 12, 25, 12500, 2024);
+        Flight flight2 = (Flight) subairline1.creatFlight(1500.0, "AZ125", subairline1, "TLV", "USA", 50, 2026, 6, 1, 20, 30, 2, 6, 12, 25, 9500, 2026);
         System.out.println("try to craet a flight whit a use number os flight");
-        Flight flight6 = subairline.creatFlight(1000.0, "AB321", airline, "MIAMI", Airport, 50, 2024, 6, 3, 20, 30, 4, 6, 12, 25, 12500, 2024);
+        Flight flight6 = (Flight) subairline.creatFlight(1000.0, "AB321", airline, "MIAMI", Airport, 50, 2024, 6, 3, 20, 30, 4, 6, 12, 25, 12500, 2024);
 
         guy.buy_tik(flight1);
         airline.attach(daniel);
@@ -51,38 +51,38 @@ public class Main {
 
         System.out.println("\n");
         Airline subairline2 = (Airline) subairline1.creatSubairline("thorkish");
-        Flight flight3 = subairline2.creatFlight(2000.0, "MK125", airline, "igap", "USA", 50, 2025, 6, 5, 20, 30, 6, 6, 12, 25, 5500, 2025);
-        Set<Flight> l = airline.getAllFlight();
+        Flight flight3 = (Flight) subairline2.creatFlight(2000.0, "MK125", airline, "igap", "USA", 50, 2025, 6, 5, 20, 30, 6, 6, 12, 25, 5500, 2025);
+        Set<Travelable> l = (Set<Travelable>) airline.getAllFlight();
         System.out.println("\n");
 
-        for (Flight fly : l) {
+        for (Travelable fly : l) {
             System.out.println(fly.toString());
 //            System.out.println(fly.getFrom());
 //            fly.print();
         }
-        ArrayList<Flight> flights = new ArrayList<>(l);
+        ArrayList<Travelable> flights = new ArrayList<>(l);
         // Populate the flights list
         System.out.println("\n" + "\n");
 
         Search searchByTime = new Search(new TimeSearchStrategy(today_));
-        ArrayList<Flight> flightsFilteredByTime = searchByTime.execute(flights);
-        for (Flight flight4 : flightsFilteredByTime) {
+        ArrayList<Travelable> flightsFilteredByTime = searchByTime.execute(flights);
+        for (Travelable flight4 : flightsFilteredByTime) {
             System.out.println(flight4.toString());
         }
         System.out.println("\n" + "\n");
 
         Search searchByPrice = new Search(new PriceSearchStrategy(10000));
-        ArrayList<Flight> flightsFilteredByPrice = searchByPrice.execute(flights);
+        ArrayList<Travelable> flightsFilteredByPrice = searchByPrice.execute(flights);
         System.out.println("search by price show just the flight that the price is less then a 10000 ans sort the flight by price ");
-        for (Flight flight4 : flightsFilteredByPrice) {
+        for (Travelable flight4 : flightsFilteredByPrice) {
             System.out.println(flight4.toString());
         }
         System.out.println("\n" + "\n");
 
         Search searchByDistans = new Search(new SerchByDistans(1000));
-        ArrayList<Flight> flightsFilteredByDistans = searchByPrice.execute(flights);
+        ArrayList<Travelable> flightsFilteredByDistans = searchByPrice.execute(flights);
         System.out.println("search by distance show just the flight that the distance is more then a 1000 ans sort the flight by distance ");
-        for (Flight flight4 : flightsFilteredByDistans) {
+        for (Travelable flight4 : flightsFilteredByDistans) {
             System.out.println(flight4.toString());
         }
 
@@ -116,9 +116,9 @@ public class Main {
         orit.set_depart_time(flight, 2025, 8, 30, 1, 1, 1, 1, 2025, 8, 31);
         System.out.println(flight.toString() + "\n  \n");
         daniel.printNotifaction();
-        l = airline.getLocalFlight();
+        l = airline.getLocalTravelable();
         System.out.println(flight.toString() + "\n print only the the Flight that the company airline creat");
-        for (Flight flight4 : l) {
+        for (Travelable flight4 : l) {
             System.out.println(l.toString());
         }
         try {
@@ -146,9 +146,9 @@ public class Main {
                         try {
                             int num = Integer.parseInt(scanner.next());
                             Search searchByPrice1 = new Search(new PriceSearchStrategy(num));
-                            ArrayList<Flight> flightsFilteredByPrice1 = searchByPrice1.execute(flights);
+                            ArrayList<Travelable> flightsFilteredByPrice1 = searchByPrice1.execute(flights);
                             System.out.println("search by price show just the flight that the price is less then a "+num+" ans sort the flight by price ");
-                            for (Flight flight4 : flightsFilteredByPrice1) {
+                            for (Travelable flight4 : flightsFilteredByPrice1) {
                                 System.out.println(flight4.toString());
                             }
                             System.out.println("\n" + "\n");
@@ -162,9 +162,9 @@ public class Main {
                     try {
                         int num = Integer.parseInt(scanner.next());
                         Search searchByDistans1 = new Search(new SerchByDistans(1000));
-                        ArrayList<Flight> flightsFilteredByDistans1 = searchByDistans1.execute(flights);
+                        ArrayList<Travelable> flightsFilteredByDistans1 = searchByDistans1.execute(flights);
                         System.out.println("search by distance show just the flight that the distance is more then a " + num + " ans sort the flight by distance ");
-                        for (Flight flight4 : flightsFilteredByDistans1) {
+                        for (Travelable flight4 : flightsFilteredByDistans1) {
                             System.out.println(flight4.toString());
                         }
 
@@ -249,8 +249,8 @@ public class Main {
 
                             if (a) {
                                 searchByTime = new Search(new TimeSearchStrategy(dateTime));
-                                ArrayList<Flight> flightsFilteredByTime1 = searchByTime.execute(flights);
-                                for (Flight flight4 : flightsFilteredByTime1) {
+                                ArrayList<Travelable> flightsFilteredByTime1 = searchByTime.execute(flights);
+                                for (Travelable flight4 : flightsFilteredByTime1) {
                                     System.out.println(flight4.toString());
                                 }
                                 System.out.println("\n" + "\n");

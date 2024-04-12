@@ -208,7 +208,7 @@ public class Flight implements Observable ,Travelable{
     }
 
     @Override
-    public void notifyObservers(Flight flight,String message) {
+    public void notifyObservers(Travelable flight,String message) {
         for (Observer observer : observers) {
             observer.update("Flight Update: " + message);
         }

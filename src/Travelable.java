@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
-public interface Travelable  {
+public interface Travelable extends Observable  {
  void buy_tiket(Passenger passenger);
  void  cancel_tiket(Passenger passenger);
      String getNumTravelabe();
@@ -20,5 +20,9 @@ public interface Travelable  {
      void setNum_of_tiket(int num_of_tiket);
      void Discount(float x);
      Set<Passenger> getPassengers();
-    public boolean isAvailable();
+     boolean isAvailable();
+    Double getPrice();
+
+
+
 }
