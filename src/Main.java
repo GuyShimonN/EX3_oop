@@ -39,7 +39,7 @@ public class Main {
         System.out.println("try to craet a flight whit a use number os flight");
         Flight flight6 = (Flight) subairline.creatFlight(1000.0, "AB321", airline, "MIAMI", Airport, 50, 2024, 6, 3, 20, 30, 4, 6, 12, 25, 12500, 2024);
 
-        guy.buy_tik(flight1);
+//        guy.buy_tik(flight1);
         airline.attach(daniel);
         subairline1.attach(Nofar);
         subairline.attach(tal);
@@ -53,7 +53,11 @@ public class Main {
         Airline subairline2 = (Airline) subairline1.creatSubairline("thorkish");
         Flight flight3 = (Flight) subairline2.creatFlight(2000.0, "MK125", airline, "igap", "USA", 50, 2025, 6, 5, 20, 30, 6, 6, 12, 25, 5500, 2025);
         Set<Travelable> l = (Set<Travelable>) airline.getAllFlight();
-        System.out.println("\n");
+        System.out.println("\n print the flight of airline that guy can buy in is money");
+        Search search = new Search(new PriceSearchStrategy(guy.getMoney()));
+        guy.search( airline);
+        guy.buy_tik(flight1);
+        System.out.println("work? \n");
 
         for (Travelable fly : l) {
             System.out.println(fly.toString());
@@ -63,24 +67,26 @@ public class Main {
         ArrayList<Travelable> flights = new ArrayList<>(l);
         // Populate the flights list
         System.out.println("\n" + "\n");
-
-        Search searchByTime = new Search(new TimeSearchStrategy(today_));
-        ArrayList<Travelable> flightsFilteredByTime = searchByTime.execute(flights);
+        search.setStrategy(new TimeSearchStrategy(today_));
+//        Search searchByTime = new Search(new TimeSearchStrategy(today_));
+        ArrayList<Travelable> flightsFilteredByTime = search.execute(flights);
         for (Travelable flight4 : flightsFilteredByTime) {
             System.out.println(flight4.toString());
         }
         System.out.println("\n" + "\n");
 
-        Search searchByPrice = new Search(new PriceSearchStrategy(10000));
-        ArrayList<Travelable> flightsFilteredByPrice = searchByPrice.execute(flights);
+//        Search searchByPrice = new Search(new PriceSearchStrategy(10000));
+        search.setStrategy(new PriceSearchStrategy(10000));
+        ArrayList<Travelable> flightsFilteredByPrice = search.execute(flights);
         System.out.println("search by price show just the flight that the price is less then a 10000 ans sort the flight by price ");
         for (Travelable flight4 : flightsFilteredByPrice) {
             System.out.println(flight4.toString());
         }
         System.out.println("\n" + "\n");
 
-        Search searchByDistans = new Search(new SerchByDistans(1000));
-        ArrayList<Travelable> flightsFilteredByDistans = searchByPrice.execute(flights);
+//        Search searchByDistans = new Search(new SerchByDistans(1000));
+        search.setStrategy(new SerchByDistans(1000));
+        ArrayList<Travelable> flightsFilteredByDistans = search.execute(flights);
         System.out.println("search by distance show just the flight that the distance is more then a 1000 ans sort the flight by distance ");
         for (Travelable flight4 : flightsFilteredByDistans) {
             System.out.println(flight4.toString());
@@ -147,7 +153,7 @@ public class Main {
                             int num = Integer.parseInt(scanner.next());
                             Search searchByPrice1 = new Search(new PriceSearchStrategy(num));
                             ArrayList<Travelable> flightsFilteredByPrice1 = searchByPrice1.execute(flights);
-                            System.out.println("search by price show just the flight that the price is less then a "+num+" ans sort the flight by price ");
+                            System.out.println("search by price show just the flight that the price is less then a " + num + " ans sort the flight by price ");
                             for (Travelable flight4 : flightsFilteredByPrice1) {
                                 System.out.println(flight4.toString());
                             }
@@ -248,8 +254,8 @@ public class Main {
                                 System.out.println("please enter 1/2");
 
                             if (a) {
-                                searchByTime = new Search(new TimeSearchStrategy(dateTime));
-                                ArrayList<Travelable> flightsFilteredByTime1 = searchByTime.execute(flights);
+                                search.setStrategy(new TimeSearchStrategy(dateTime));
+                                ArrayList<Travelable> flightsFilteredByTime1 = search.execute(flights);
                                 for (Travelable flight4 : flightsFilteredByTime1) {
                                     System.out.println(flight4.toString());
                                 }
@@ -274,6 +280,158 @@ public class Main {
 
 
     }
+
+    public static ArrayList<Travelable> serch(ArrayList<Travelable> flights) {
+        Search search = new Search(new PriceSearchStrategy(1000));
+        ArrayList<Travelable> arrayList =new ArrayList<Travelable>();
+        try {
+            Scanner scanner = new Scanner(System.in);
+
+            while (true) {
+                System.out.println("Welcome to the search Flight System");
+                System.out.println("1. Search by price");
+                System.out.println("2. Search by distance");
+                System.out.println("3.Search by time");
+                System.out.println("4. Exit");
+                System.out.print("Select an option: ");
+
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline left-over
+
+                if (choice == 1) {
+                    System.out.println("enter the maximum of money that do you ready to pay ");
+                    while (true) {
+                        try {
+                            int num = Integer.parseInt(scanner.next());
+                            search.setStrategy(new PriceSearchStrategy(num));
+                            arrayList = search.execute(flights);
+                            System.out.println("search by price show just the flight that the price is less then a " + num + " ans sort the flight by price ");
+                            for (Travelable flight4 : arrayList) {
+                                System.out.println(flight4.toString());
+                            }
+                            System.out.println("\n" + "\n");
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("enter a number");
+                        }
+                    }
+                } else if (choice == 2) {
+                    System.out.println("enter the min of distance that do you ready to flight ");
+                    try {
+                        int num = Integer.parseInt(scanner.next());
+                        search.setStrategy(new SerchByDistans(1000));
+                        arrayList = search.execute(flights);
+                        System.out.println("search by distance show just the flight that the distance is more then a " + num + " ans sort the flight by distance ");
+                        for (Travelable flight4 : arrayList) {
+                            System.out.println(flight4.toString());
+                        }
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("enter a number");
+                    }
+                } else if (choice == 3) {
+
+
+                    while (true) {
+                        boolean a = false;
+                        int year_of_depart;
+                        int month_of_depart;
+                        int day_of_depart;
+                        int hours_of_depart;
+                        int minute_depart;
+                        LocalDate date;
+                        LocalTime time;
+                        LocalDateTime dateTime = null;
+                        System.out.println("to you wand from now or ander time? for now press 1 and ander time press 2 ");
+                        while (true) {
+                            int choice1 = scanner.nextInt();
+
+                            if (choice1 == 1) {
+                                a = true;
+                                dateTime = today_;
+                            } else if (choice1 == 2) {
+                                a = true;
+                                while (true) {
+                                    System.out.println("enter the year of depart flight");
+                                    try {
+                                        year_of_depart = Integer.parseInt(scanner.next());
+                                        break;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("please enter the year just a digit");
+                                    }
+                                }
+                                while (true) {
+                                    System.out.println("enter the month of depart flight");
+                                    try {
+                                        month_of_depart = Integer.parseInt(scanner.next());
+                                        break;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("please enter the month just a digit");
+                                    }
+                                }
+                                while (true) {
+                                    System.out.println("enter the day of depart flight");
+                                    try {
+                                        day_of_depart = Integer.parseInt(scanner.next());
+                                        if (day_of_depart < 32) {
+                                            break;
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("please enter the day just a digit");
+                                    }
+                                }
+                                while (true) {
+                                    System.out.println("enter the hours of depart flight");
+                                    try {
+                                        hours_of_depart = Integer.parseInt(scanner.next());
+                                        break;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("please enter the day just a digit");
+                                    }
+                                }
+                                while (true) {
+                                    System.out.println("enter the minute of depart flight");
+                                    try {
+                                        minute_depart = Integer.parseInt(scanner.next());
+                                        break;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("please enter the day just a digit");
+                                    }
+                                }
+                                LocalDate date1 = LocalDate.of(year_of_depart, month_of_depart, day_of_depart);
+                                LocalTime time1 = LocalTime.of(hours_of_depart, minute_depart);
+                                dateTime = LocalDateTime.of(date1, time1);
+
+                            } else
+                                System.out.println("please enter 1/2");
+
+                            if (a) {
+                                search.setStrategy(new TimeSearchStrategy(dateTime));
+                                arrayList = search.execute(flights);
+                                for (Travelable flight4 : arrayList) {
+                                    System.out.println(flight4.toString());
+                                }
+                                System.out.println("\n" + "\n");
+                                break;
+                            }
+                        }
+
+
+                        break;
+
+                    }
+                } else if (choice == 4) {
+                    break;
+                } else System.out.println("please enter 1/2/3");
+            }
+
+        } catch (
+                Exception e) {
+            throw new RuntimeException(e);
+        }
+        return arrayList;
+    }
+
 }
 
 

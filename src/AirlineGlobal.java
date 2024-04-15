@@ -5,7 +5,7 @@ import java.util.Set;
 public abstract class AirlineGlobal implements Observable {
     protected Set<Observer> observers_Airline = new HashSet<>();
     protected Set<Employed> Employeds =new HashSet<Employed>();
-
+    protected  Set<AirlineGlobal> subAirline;
     private String name;
 
    protected   Set<Travelable> allFlight;

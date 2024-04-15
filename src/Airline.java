@@ -3,13 +3,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 class Airline extends AirlineGlobal {
-    private Set<AirlineGlobal> subAirline;
+
 
     // Implement AirlineComponent methods
 
     public Airline(String name) {
         super(name);
-        this.subAirline = new HashSet<AirlineGlobal>();
+        super.subAirline = new HashSet<AirlineGlobal>();
         super.allFlight = new HashSet<Travelable>();
 
     }

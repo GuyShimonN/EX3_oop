@@ -56,4 +56,9 @@ public abstract class User implements Observer {
     public String toString(){
         return "the name is "+this.getName()+" the id is "+this.getId()+" the amount of money in the account is "+this.money;
     }
+    public ArrayList<Travelable> search(AirlineGlobal airlineGlobal){
+        ArrayList<Travelable> arrayList =new ArrayList<>(airlineGlobal.getAllFlight());
+      arrayList=Main.serch(arrayList);
+        return arrayList;
+    }
 }
