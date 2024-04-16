@@ -5,7 +5,7 @@ import java.util.Set;
 class Airline extends AirlineGlobal {
 
 
-    // Implement AirlineComponent methods
+
 
     public Airline(String name) {
         super(name);
@@ -53,6 +53,16 @@ class Airline extends AirlineGlobal {
            child.attach(t);
        }
    }
+    void deleteTravelable(Flight flight){
+        for (Passenger passenger:flight.getPassengers()){
+            flight.cancel_tiket(passenger);
+        }
+        this.allFlight.remove(flight);
+        notifyObservers(flight,"the flight "+flight.getNumTravelabe()+" cancel");
+        flight.notifyObservers_for_passnger(flight,"Please note the flight"+flight.getNumTravelabe()+" has been canceled and you will receive a refund ");
+        Main.NumFlight.remove(flight.getNumTravelabe());
+        flight=null;
+    }
         public void removeChild(AirlineGlobal child){
             this.subAirline.remove(child);
         }

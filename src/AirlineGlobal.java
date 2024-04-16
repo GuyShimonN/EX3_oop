@@ -20,16 +20,7 @@ public abstract class AirlineGlobal implements Observable {
 
 
 
-    void deleteFlight(Flight flight){
-        for (Passenger passenger:flight.getPassengers()){
-            flight.cancel_tiket(passenger);
-        }
-       this.allFlight.remove(flight);
-        notifyObservers(flight,"the flight "+flight.getNumTravelabe()+" cancel");
-        flight.notifyObservers_for_passnger(flight,"Please note the flight"+flight.getNumTravelabe()+" has been canceled and you will receive a refund ");
-        Main.NumFlight.remove(flight.getNumTravelabe());
-        flight=null;
-    }
+
     public Collection<Travelable> getAllFlight(){
        return  allFlight;
     }
@@ -68,4 +59,5 @@ public abstract class AirlineGlobal implements Observable {
        return allFlight;
     }
 
+     abstract void deleteTravelable(Flight flight);
 }

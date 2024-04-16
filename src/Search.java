@@ -11,10 +11,10 @@ public class Search {
         if (strategy != null) {
             return strategy.search(flights);
         }
-        return flights; // Return the unfiltered list if no strategy is set
+        return flights;
     }
 
-    // Optionally, allow changing the strategy at runtime
+
     public void setStrategy(SearchStrategy strategy) {
         this.strategy = strategy;
     }

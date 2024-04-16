@@ -48,7 +48,7 @@ public class Employed extends Passenger {
   }
   public void deleteFlight(Flight flight){
         if (owner.getAllFlight().contains(flight)){
-            owner.deleteFlight(flight);
+            owner.deleteTravelable(flight);
         }
         else System.out.println("you dont have permission to that");
   }
