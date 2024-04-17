@@ -45,7 +45,7 @@ public class Main {
         subairline.attach(tal);
 
 
-        System.out.println(flight1.getNum_of_tiket());
+        System.out.println(flight1.getNum_of_tickets());
 
         System.out.println(flight1.isAvailable());
 

@@ -12,8 +12,8 @@ public class SerchByDistans implements SearchStrategy {
     @Override
     public ArrayList<Travelable> search(ArrayList<Travelable> flights) {
         ArrayList<Travelable> filteredFlights = flights.stream()
-                .filter(flight -> flight.getDistans() <= minDistance)
-                .sorted(Comparator.comparingDouble(Travelable::getDistans))
+                .filter(flight -> flight.getDistance() <= minDistance)
+                .sorted(Comparator.comparingDouble(Travelable::getDistance))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return filteredFlights;
