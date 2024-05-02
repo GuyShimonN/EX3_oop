@@ -3,7 +3,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class SerchByDistans implements SearchStrategy {
-    private double minDistance;
+    private final double minDistance;
 
     public SerchByDistans(double maxDistance) {
         this.minDistance = maxDistance;

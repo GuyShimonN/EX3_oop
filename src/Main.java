@@ -173,12 +173,12 @@ public class Main {
                         }
                     }
                 } else if (choice == 2) {
-                    System.out.println("enter the min of distance that do you ready to flight ");
+                    System.out.println("enter the max of distance that do you ready to flight ");
                     try {
                         int num = Integer.parseInt(scanner.next());
-                        search.setStrategy(new SerchByDistans(1000));
+                        search.setStrategy(new SerchByDistans(num));
                         arrayList = search.execute(flights);
-                        System.out.println("search by distance show just the flight that the distance is more then a " + num + " ans sort the flight by distance ");
+                        System.out.println("search by distance show just the flight that the distance is less then a " + num + " ans sort the flight by distance ");
                         for (Travelable flight4 : arrayList) {
                             System.out.println(flight4.toString());
                         }
